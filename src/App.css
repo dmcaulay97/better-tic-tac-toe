@@ -8,7 +8,7 @@
 }
 
 .board {
-  height: 600px;
+  height: 66vh;
   aspect-ratio: 1;
   background-color: black;
   display: flex;
@@ -16,14 +16,14 @@
 }
 
 .square {
-  height: 200px;
+  height: 22vh;
   aspect-ratio: 1;
   box-sizing: border-box;
   border: 2px white solid;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 150px;
+  font-size: 100px;
   color: white;
 }
 
