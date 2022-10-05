@@ -27,7 +27,7 @@ function App() {
     let draw = checkDraw(board)
     let win = checkWin(index, board);
     // console.log(draw, win)
-    if (draw) {
+    if (draw && !win) {
       score = 0
     } else if (isMaximizing) {
       score = win ? 1 : null
@@ -218,6 +218,9 @@ function App() {
       turn === 'X' ? setTurn('O') : setTurn('X');
     }
   };
+
+  const testboard = ['X', 'O', 'X', '', 'O', '', 'O', 'X', 'X']
+  // console.log(bestMove(testboard))
 
   return (
     <div className="App">
