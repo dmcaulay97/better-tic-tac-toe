@@ -6,6 +6,7 @@ function App() {
   const [boardState, setBoardState] = useState(['', '', '', '', '', '', '', '', '']);
   const [turn, setTurn] = useState('X');
   const [gameOver, setGameOver] = useState(true)
+  const [difficulty, setDifficulty] = useState('easy')
 
 
 
@@ -13,11 +14,21 @@ function App() {
     if (!gameOver && turn === 'O') {
       const overlay = document.getElementsByClassName('overlay')[0];
       overlay.style.display = 'flex';
-      //randomMove
-      // setTimeout(computerMove, 500);
 
-      //AI move
-      setTimeout(computerMove, 500, true, bestMove(boardState))
+      if (difficulty === 'easy') {
+        //randomMove
+        setTimeout(computerMove, 500);
+      } else if (difficulty === 'medium') {
+        const random = Math.random()
+        if (random < .2) {
+          setTimeout(computerMove, 500);
+        } else {
+          setTimeout(computerMove, 500, true, bestMove(boardState))
+        }
+      } else {
+        //AI move
+        setTimeout(computerMove, 500, true, bestMove(boardState))
+      }
     }
   }, [turn]);
 
@@ -127,6 +138,8 @@ function App() {
     winner.style.display = 'none'
     const start = document.getElementsByClassName('start')[0];
     start.style.display = 'none'
+    const diff = document.getElementsByClassName('diff')[0];
+    diff.style.display = 'none'
   };
 
   const endGame = (draw) => {
@@ -136,12 +149,14 @@ function App() {
 
     const start = document.getElementsByClassName('start')[0];
     start.style.display = 'initial'
+    const diff = document.getElementsByClassName('diff')[0];
+    diff.style.display = 'initial'
     const winner = document.getElementsByClassName('winner')[0];
     winner.style.display = 'flex'
     if (draw) {
       winner.textContent = `The Game is a Draw`
     } else {
-      winner.textContent = `${turn} is the winner`
+      winner.textContent = `${turn} is the Winner`
     }
   };
 
@@ -222,6 +237,24 @@ function App() {
   const testboard = ['X', 'O', 'X', '', 'O', '', 'O', 'X', 'X']
   // console.log(bestMove(testboard))
 
+  const changeDiff = () => {
+    const settings = document.getElementsByClassName('settings')[0]
+    settings.style.display = 'flex'
+  }
+
+  const close = () => {
+    const settings = document.getElementsByClassName('settings')[0]
+    settings.style.display = 'none'
+  }
+
+  const diffSelect = (diff) => {
+    const selected = document.getElementById(difficulty)
+    selected.setAttribute('class', 'diffButton')
+    const newSelected = document.getElementById(diff)
+    newSelected.setAttribute('class', 'diffButton selected')
+    setDifficulty(diff)
+  }
+
   return (
     <div className="App">
       <div className='board'>
@@ -254,12 +287,31 @@ function App() {
         </div>
       </div>
 
+      <div className='settings'>
+        <h1>Difficulty</h1>
+        <div className='diffButton selected' id='easy' onClick={() => { diffSelect('easy') }}>
+          Easy
+        </div>
+        <div className='diffButton' id='medium' onClick={() => { diffSelect('medium') }}>
+          Medium
+        </div>
+        <div className='diffButton' id='hard' onClick={() => { diffSelect('hard') }}>
+          Hard
+        </div>
+        <div className='diffButton close' onClick={close}>
+          Close
+        </div>
+      </div>
+
       <div className='overlay'>
+        <button className='start' onClick={startGame}>
+          New Game
+        </button>
         <div className='winner'>
           TIC-TAC-TOE
         </div>
-        <button className='start' onClick={startGame}>
-          New Game
+        <button className='start diff' onClick={changeDiff}>
+          Change Difficulty
         </button>
       </div>
     </div>
